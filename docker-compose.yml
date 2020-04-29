@@ -1,0 +1,101 @@
+version: '3.7'
+
+services:
+    angular:
+        build: ./Client/todo-app
+        depends_on:
+            - "mysql"
+        ports:
+            - "4200:4200"
+        links:
+            - server
+        volumes: 
+            - "/app/node_modules"
+            - "./Client/todo-app:/app"
+    mysql:
+        image: mysql:5.7
+        restart: always
+        command: --default-authentication-plugin=mysql_native_password
+        container_name: dev_mysql
+        environment:
+            MYSQL_USER: gavin
+            MYSQL_PASSWORD: gavin
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: todoangular
+        volumes: 
+            - ./mysql/tables:/docker-entrypoint-initdb.d
+    server: 
+        container_name: server
+        image: node:12
+        depends_on:
+            - "mysql"
+        build: ./Server
+        command: npm start
+        working_dir: /usr/src/app
+        environment:
+            MYSQL_USER: gavin
+            MYSQL_PASSWORD: gavin
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: todoangular
+            MYSQL_HOST: mysql
+            # REDIS_URI: redis//redis:6379
+        links:
+            - mysql
+            # - redis
+        ports:
+            - 5000:5000
+        # volumes: 
+        #     - ./:/usr/src/app
+
+    # phpmyadmin:
+    #     image: phpmyadmin/phpmyadmin
+    #     container_name: dev_pma
+    #     links:
+    #         - mysql
+    #     environment:
+    #         PMA_HOST: mysql
+    #         PMA_PORT: 3306
+    #         PMA_ARBITRARY: 1
+    #     restart: always
+    #     links:
+    #         - server
+    #     ports:
+    #         - "8183:80"
+
+    # adminer:
+    #     image: adminer
+    #     restart: always
+    #     ports:
+    #         - 8080:8080
+    
+    # phpmyadmin:
+    #     image: phpmyadmin/phpmyadmin
+    #     restart: always
+    #     depends_on:
+    #         - mysql
+    #     environment:
+    #         MYSQL_ROOT_PASSWORD: rootgavin
+    #         MYSQL_USER: gavin@172.18.0.4
+    #         MYSQL_PASSWORD: gavin
+    #         MYSQL_DATABASE: todoangular
+    #         PMA_HOST: mysql
+    #         PMA_PORT: 3306
+    #     restart: always
+    #     ports:
+    #         - 8899:80
+
+    # nginx:
+    #     image: "nginx:latest"
+    
+    # apache:
+    #     image: "httpd:latest"
+
+    # redis:
+    #     image: redis
+    #     ports:
+    #         - "6379:6379"
+
+
+
+
+            

@@ -1,0 +1,29 @@
+{
+  "name": "todoangular",
+  "version": "1.0.0",
+  "description": "Backend for expense tracker",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server",
+    "server": "nodemon server"
+  },
+  "author": "Soh Gavin",
+  "license": "MIT",
+  "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "colors": "^1.4.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-q": "0.0.2",
+    "jsonwebtoken": "^8.5.1",
+    "knex": "^0.21.1",
+    "morgan": "^1.10.0",
+    "mysql": "^2.18.1",
+    "redis": "^3.0.2"
+  },
+  "devDependencies": {
+    "concurrently": "^5.2.0",
+    "nodemon": "^2.0.3"
+  }
+}
